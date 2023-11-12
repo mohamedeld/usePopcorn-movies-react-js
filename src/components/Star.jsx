@@ -1,4 +1,4 @@
-const Star = ({ selectStar, full, onHoverIn, onHoverOut, color, size }) => {
+const Star = ({ onRate, full, onHoverIn, onHoverOut, color, size }) => {
   const starStyle = {
     width: `${size}px`,
     height: `${size}px`,
@@ -9,7 +9,7 @@ const Star = ({ selectStar, full, onHoverIn, onHoverOut, color, size }) => {
     <span
       role="button"
       style={starStyle}
-      onClick={selectStar}
+      onClick={onRate}
       onMouseEnter={onHoverIn}
       onMouseLeave={onHoverOut}
     >

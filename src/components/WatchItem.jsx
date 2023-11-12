@@ -1,10 +1,8 @@
-import StarRating from "./StarRating";
-
-const WatchItem = ({ movie }) => {
+const WatchItem = ({ movie, onDelete }) => {
   return (
     <li>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
+      <img src={movie.poster} alt={`${movie.title} poster`} />
+      <h3>{movie.title}</h3>
       <div>
         <p>
           <span>⭐️</span>
@@ -18,8 +16,10 @@ const WatchItem = ({ movie }) => {
           <span>⏳</span>
           <span>{movie.runtime} min</span>
         </p>
+        <button className="btn-delete" onClick={() => onDelete(movie.imdbID)}>
+          ❌
+        </button>
       </div>
-      <StarRating maxRating={5} color={"#FFD700"} size={30} />
     </li>
   );
 };
