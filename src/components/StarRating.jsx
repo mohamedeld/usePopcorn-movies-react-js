@@ -9,7 +9,7 @@ const StarRating = ({ maxRating, color, size }) => {
   const [star, setStar] = useState(0);
   const [tempRating, setTempRating] = useState(0);
   return (
-    <div>
+    <div style={{ display: "flex" }}>
       <div style={ratingStyle}>
         {Array.from({ length: maxRating }, (_, i) => (
           <Star
@@ -23,7 +23,7 @@ const StarRating = ({ maxRating, color, size }) => {
           />
         ))}
       </div>
-      <p>{tempRating || star || ""}</p>
+      <p style={{ marginLeft: "10px" }}>{tempRating || star || ""}</p>
     </div>
   );
 };

@@ -9,6 +9,7 @@ import WatchList from "./components/WatchList";
 import WatchedSummary from "./components/WatchedSummary";
 import { tempMovieData, tempWatchedData } from "./data";
 import "./index.css";
+import SelectedMovie from "./components/SelectedMovie";
 const KEY = "2e88268e";
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -16,8 +17,14 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
 
-  const queryURL = "interstellar";
+  function handleSelect(id) {
+    setSelectedId((selectedId) => (id === selectedId ? null : id));
+  }
+  function handleMovieClose() {
+    setSelectedId(null);
+  }
   useEffect(
     function () {
       async function fetchData() {
@@ -40,7 +47,7 @@ export default function App() {
           setError("");
         }
       }
-      if (!query.length) {
+      if (query.length < 3) {
         setMovies([]);
         setError("");
         return;
@@ -60,13 +67,24 @@ export default function App() {
 
       <main className="main">
         <Box>
-          {!isLoading && !error && <MoviesList movies={movies} />}
+          {!isLoading && !error && (
+            <MoviesList movies={movies} onHandleSelect={handleSelect} />
+          )}
           {isLoading && <p>Loading...</p>}
           {error && <p>{error}</p>}
         </Box>
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchList watched={watched} />
+          {selectedId ? (
+            <SelectedMovie
+              selectedId={selectedId}
+              onHandleClose={handleMovieClose}
+            />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchList watched={watched} />
+            </>
+          )}
         </Box>
       </main>
     </>

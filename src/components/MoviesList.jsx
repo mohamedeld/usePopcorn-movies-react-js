@@ -1,9 +1,13 @@
 import MoviesItem from "./MoviesItem";
-const MoviesList = ({ movies }) => {
+const MoviesList = ({ movies, onHandleSelect }) => {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {movies?.map((movie) => (
-        <MoviesItem key={movie.imdbID} movie={movie} />
+        <MoviesItem
+          key={movie.imdbID}
+          movie={movie}
+          handleSelected={onHandleSelect}
+        />
       ))}
     </ul>
   );

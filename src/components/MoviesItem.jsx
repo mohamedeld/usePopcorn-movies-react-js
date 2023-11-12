@@ -1,6 +1,6 @@
-const MoviesItem = ({ movie }) => {
+const MoviesItem = ({ movie, handleSelected }) => {
   return (
-    <li>
+    <li onClick={() => handleSelected(movie.imdbID)}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
       <h3>{movie.Title}</h3>
       <div>
