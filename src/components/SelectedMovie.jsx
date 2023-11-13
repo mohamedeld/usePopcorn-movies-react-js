@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import StarRating from "./StarRating";
 
 const SelectedMovie = ({
@@ -10,6 +10,13 @@ const SelectedMovie = ({
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState(0);
+  const countRating = useRef(0);
+  useEffect(
+    function () {
+      if (userRating) countRating.current++;
+    },
+    [userRating]
+  );
   function handleUserRating(rating) {
     setUserRating(rating);
   }
@@ -38,10 +45,22 @@ const SelectedMovie = ({
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      theCountRating: countRating.current,
     };
     onAddWatched(newMovie);
     onHandleClose();
   }
+  useEffect(function () {
+    function callback(e) {
+      if (e.code === "Escape") {
+        onHandleClose();
+      }
+    }
+    document.addEventListener("keydown", callback);
+    return function () {
+      document.addEventListener("keydown", callback);
+    };
+  }, []);
   useEffect(
     function () {
       async function getMovie() {

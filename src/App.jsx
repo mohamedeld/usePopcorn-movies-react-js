@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import Box from "./components/Box";
+import Logo from "./components/Logo";
 import MoviesList from "./components/MoviesList";
 import Nav from "./components/Nav";
-import Logo from "./components/Logo";
-import Search from "./components/Search";
 import NumResults from "./components/NumResults";
+import Search from "./components/Search";
+import SelectedMovie from "./components/SelectedMovie";
 import WatchList from "./components/WatchList";
 import WatchedSummary from "./components/WatchedSummary";
-import { tempMovieData, tempWatchedData } from "./data";
+import useMovies from "./hooks/useMovies";
 import "./index.css";
-import SelectedMovie from "./components/SelectedMovie";
+import useLocalStorage from "./hooks/useLocalStorage";
 const KEY = "2e88268e";
 export default function App() {
-  const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [query, setQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  const { movies, isLoading, error } = useMovies(query);
+
+  const [watched, setWatched] = useLocalStorage([], "watched");
 
   function handleSelect(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
@@ -31,37 +31,6 @@ export default function App() {
   function deleteMovie(id) {
     setWatched((watched) => watched.filter((watch) => watch.imdbID !== id));
   }
-  useEffect(
-    function () {
-      async function fetchData() {
-        try {
-          const response = await fetch(
-            `http://www.omdbapi.com/?i=tt3896198&apikey=e9f7880&s=${query}`
-          );
-          if (!response.ok) {
-            throw new Error(
-              "something went wrong please check your connection"
-            );
-          }
-          const data = await response.json();
-          setMovies(data.Search);
-        } catch (err) {
-          console.log(err);
-          setError(err.message);
-        } finally {
-          setIsLoading(false);
-          setError("");
-        }
-      }
-      if (query.length < 3) {
-        setMovies([]);
-        setError("");
-        return;
-      }
-      fetchData();
-    },
-    [query]
-  );
 
   return (
     <>
